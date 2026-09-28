@@ -1,6 +1,5 @@
 import "@/global.css";
 
-
 // Familles de polices
 export const FontFamilies = {
   regular: "Poppins_400Regular",
