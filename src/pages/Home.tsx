@@ -1,14 +1,29 @@
-import { View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import {
+    Image,
+    Text,
+    TextInput,
+    View
+} from "react-native";
 
 export default function Home() {
     return (
-    <View style={styles.container}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.light.mainBg }} />
+        <View>
             <View>
-                <Text>Home</Text>
+                <View>
+                    <Text>⌕</Text>
+                    <TextInput
+                        accessibilityLabel="Rechercher une ouevre"
+                        placeholder="Search"
+                        placeholderTextColor="#777777"
+                    />
+                </View>
             </View>
-        </SafeAreaView>
-    </View >
-  );
+            <View>
+                <Image
+                    source={require("@/assets/images/logo.png")}
+                />
+                <Text>Pokédex</Text>
+            </View>
+        </View>
+    );
 }
