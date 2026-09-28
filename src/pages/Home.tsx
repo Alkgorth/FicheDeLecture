@@ -20,7 +20,7 @@ export default function Home() {
             </View>
             <View>
                 <Image
-                    source={require("@/assets/images/logo.png")}
+                    source={require("@/assets/images/logo.jpg")}
                 />
                 <Text>Pokédex</Text>
             </View>
