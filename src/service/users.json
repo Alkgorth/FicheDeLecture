@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "role": "user",
+      "email": "alice@example.com",
+      "password": "Alice123!",
+      "pseudo": "Alice",
+      "avatar": "assets/avatars/alice.png"
+    },
+    {
+      "id": 2,
+      "role": "user",
+      "email": "thomas@example.com",
+      "password": "Thomas123!",
+      "pseudo": "Thomas",
+      "avatar": "assets/avatars/thomas.png"
+    },
+    {
+      "id": 3,
+      "role": "admin",
+      "email": "admin1@example.com",
+      "password": "Admin123!",
+      "pseudo": "AdminOne",
+      "avatar": "assets/avatars/admin1.png"
+    },
+    {
+      "id": 4,
+      "role": "admin",
+      "email": "admin2@example.com",
+      "password": "Admin456!",
+      "pseudo": "AdminTwo",
+      "avatar": "assets/avatars/admin2.png"
+    }
+  ]
+}
