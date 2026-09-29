@@ -1,44 +1,51 @@
-import useThemeColors from "@/hooks/useThemeColors";
+import HeaderTitle from "@/components/HeaderTitle";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 import { Colors } from "@/uiThemes/Colors";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
-import { StyleSheet } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
-
-const Stack = createNativeStackNavigator();
 
 const AppTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: Colors.light.mainBg, // fond de tous les écrans
-    // primary: Colors.primary,
-    // card: Colors.card,             // fond des headers / tab bars
-    // text: Colors.text,
-    // border: Colors.border,
+    background: Colors.light.mainBg, // fond de tous les écrans en mode light
   },
 };
 
-export default function App() {
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
+export type RootStackParamList = {
+  HomePage: undefined;
+  LoginPage: undefined;
+  RegisterPage: undefined;
+};
+
+export default function App() {
   return (
     <NavigationContainer theme={AppTheme}>
-      <Stack.Navigator
-        initialRouteName="Connexion"
-      >
+      <Stack.Navigator initialRouteName="LoginPage">
         <Stack.Screen
-          name="Connexion"
+          name="LoginPage"
           component={Login}
-          options={{ title: "Page de connexion" }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Bienvenue"
+          name="HomePage"
           component={Home}
-          options={{ title: "Accueil" }}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RegisterPage"
+          component={Register}
+          options={{
+            headerTitle:()=> <HeaderTitle  text="Création de compte"/> ,
+            headerTitleAlign: "center", // ou "left"
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

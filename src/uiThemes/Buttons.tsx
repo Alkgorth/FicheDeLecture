@@ -1,4 +1,4 @@
 export const Buttons = {
-  borderRadius: 8,
-  padding: 8,
+  borderRadius: 12,
+  padding: 12,
 } as const;
