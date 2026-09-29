@@ -1,7 +1,8 @@
 import useThemeColors from "@/hooks/useThemeColors";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
-import { NavigationContainer } from "@react-navigation/native";
+import { Colors } from "@/uiThemes/Colors";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import { StyleSheet } from "react-native";
@@ -10,16 +11,24 @@ SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
 
+const AppTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: Colors.light.mainBg, // fond de tous les écrans
+    // primary: Colors.primary,
+    // card: Colors.card,             // fond des headers / tab bars
+    // text: Colors.text,
+    // border: Colors.border,
+  },
+};
+
 export default function App() {
-  const colors = useThemeColors();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={AppTheme}>
       <Stack.Navigator
         initialRouteName="Connexion"
-        screenOptions={{
-          headerStyle: { backgroundColor: colors.mainBg },
-        }}
       >
         <Stack.Screen
           name="Connexion"
@@ -35,15 +44,6 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
-  },
-});
 
 // export default function RootLayout() {
 
