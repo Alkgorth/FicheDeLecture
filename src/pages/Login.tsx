@@ -1,15 +1,18 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { Inputs } from "../uiThemes/Input";
 // import { Button } from "expo-router/build/react-navigation";
-import Logo from '@/assets/images/LogoLight.svg'
+import Logo from '../assets/images/LogoLight.svg'
 import useThemeColors from "@/hooks/useThemeColors";
 import { Buttons } from "@/uiThemes/Buttons";
+
 // type Props={
 //   navigation:any
 // }
 
 const Login = () => {
+  
   const colors = useThemeColors();
+
   return (
     <View style={styles.container}>
       <Logo width={200} height={220} />
