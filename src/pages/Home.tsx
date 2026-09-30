@@ -7,11 +7,11 @@ import {
     View,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from '@/uiThemes/Colors';
 import { Typography } from '@/uiThemes/Fonts';
 import { Inputs } from '@/uiThemes/Input';
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import BookCard from "@/components/BookCard";
 import cardsHome from "@/data/cardsHome.json";
