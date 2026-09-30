@@ -16,7 +16,7 @@ import { Inputs } from '@/uiThemes/Input';
 
 import BookCard from "@/components/BookCards";
 import cardsHome from "@/data/cardsHome.json";
-import type { SheetBook } from "@/types/CardsHome";
+import type { SheetBook } from "@/types/SheetBook";
 
 export default function Home() {
     const books = cardsHome as SheetBook[];

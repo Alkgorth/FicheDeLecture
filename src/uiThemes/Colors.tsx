@@ -1,5 +1,6 @@
 export const Colors={
     light:{
+        white: "#FFFFFF",
         mainBg:"#FAF6EE",
         buttonBg:"#C2410C",
         textBg:"#FFFFFF",
