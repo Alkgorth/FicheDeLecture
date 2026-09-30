@@ -1,147 +1,187 @@
 import {
-    FlatList,
-    Image,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
-import { Colors } from '@/uiThemes/Colors';
-import { Typography } from '@/uiThemes/Fonts';
-import { Inputs } from '@/uiThemes/Input';
+import { Colors } from "@/uiThemes/Colors";
+import { Typography } from "@/uiThemes/Fonts";
+import { Inputs } from "@/uiThemes/Input";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BookCard from "@/components/BookCard";
+import UserAvatar from "@/components/UserAvatar";
+import { useAuth } from "@/context/AuthContext";
 import cardsHome from "@/data/cardsHome.json";
 import type { SheetBook } from "@/types/SheetBook";
+import { Buttons } from "@/uiThemes/Buttons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App";
 
-const books: SheetBook[] =  cardsHome;
+const books: SheetBook[] = cardsHome;
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function Home() {
+  const { user, logout } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.logoImageContainer}>
-                <View style={styles.logoContainer}>
-                    <Image
-                        accessibilityLabel="Logo de l'application"
-                        style={styles.logoImage}
-                        source={require("@/assets/images/logo.jpg")}
-                    />
-                    <Text style={Typography.title}>Libri</Text>
-                </View>
-                <Image
-                    accessibilityLabel="Avatar utilisateur"
-                    style={styles.avatarImage}
-                    source={require("@/assets/images/avatar.jpg")}
-                />
-            </View>
-            <View style={styles.searchContainer}>
+  const handleLogout = async () => {
+    await logout();
+    navigation.reset({ index: 0, routes: [{ name: "LoginPage" }] });
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <UserAvatar user={user} size={48} />
+          <Text>Bonjour {user?.pseudo}</Text>
+        </View>
+        <View style={{flexDirection:'row', gap:8, alignItems:'center',}}>
+          {/* Affichage conditionnel selon le rôle */}
+          {user?.role === "admin" && (
+            <Pressable
+              style={Buttons.secondary}
+              accessibilityRole="button"
+              accessibilityLabel="Ouvrir l'espace administration"
+            >
+              <Text>
                 <Ionicons
-                    name="search-outline"
-                    size={20}
-                    color={Colors.light.textColorSub}
-                    accessibilityElementsHidden={true}
-                    importantForAccessibility="no-hide-descendants"
+                  name="briefcase-outline"
+                  size={18}
+                  color={Colors.light.buttonBg}
                 />
-                <TextInput
-                    style={[Typography.body, styles.searchInput]}
-                    accessibilityLabel="Rechercher une œuvre"
-                    placeholderTextColor={Colors.light.textColorSub}
-                    placeholder="Rechercher des livres, auteurs, fiches…"
-                />
-            </View>
+              </Text>
+            </Pressable>
+          )}
+          <Pressable
+            style={Buttons.primary}
+            onPress={handleLogout}
+            accessibilityRole="button"
+            accessibilityLabel="Se déconnecter"
+          >
+            <Text>
+              <Ionicons
+                name="power-outline"
+                size={18}
+                color={Colors.light.textBg}
+              />
+            </Text>
+          </Pressable>
+        </View>
+      </View>
 
-            <View style={styles.flatlist}>
-                <FlatList
-                    data={books}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <BookCard book={item} />
-                    )}
-                    ListHeaderComponent={
-                        <Text style={styles.titlePage}>Dernières lectures de la communauté</Text>
-                    }
-                    contentContainerStyle={styles.listContent}
-                    ListEmptyComponent={
-                        <Text style={styles.emptyText}>
-                            Aucune lecture à afficher.
-                        </Text>
-                    }
-                    showsVerticalScrollIndicator={false}
-                />
-            </View>
-        </SafeAreaView>
-
-    );
+      <View style={styles.searchContainer}>
+        <Ionicons
+          name="search-outline"
+          size={20}
+          color={Colors.light.textColorSub}
+          accessibilityElementsHidden={true}
+          importantForAccessibility="no-hide-descendants"
+        />
+        <TextInput
+          style={[Typography.body, styles.searchInput]}
+          accessibilityLabel="Rechercher une œuvre"
+          placeholderTextColor={Colors.light.textColorSub}
+          placeholder="Rechercher des livres, auteurs, fiches…"
+        />
+      </View>
+      <View style={styles.flatlist}>
+        <FlatList
+          data={books}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <BookCard book={item} />}
+          ListHeaderComponent={
+            <Text style={styles.titlePage}>
+              Dernières lectures de la communauté
+            </Text>
+          }
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>Aucune lecture à afficher.</Text>
+          }
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-        maxWidth: 800,
-        alignSelf: 'center',
-        backgroundColor: Colors.light.mainBg,
-        padding: 16,
-    },
+  container: {
+    flex: 1,
+    width: "100%",
+    maxWidth: 800,
+    alignSelf: "center",
+    backgroundColor: Colors.light.mainBg,
+    padding: 16,
+  },
 
-    logoImageContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
+  logoImageContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 
+  logoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 
-    logoContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+  logoImage: {
+    width: 47,
+    height: 47,
+  },
 
-    logoImage: {
-        width: 47,
-        height: 47,
-    },
+  avatarImage: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
 
-    avatarImage: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-    },
+  searchContainer: {
+    ...Inputs,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: Colors.light.textBg,
+    padding: 12,
+    marginTop: 16,
+  },
 
-    searchContainer: {
-        ...Inputs,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-        backgroundColor: Colors.light.textBg,
-        padding: 12,
-        marginTop: 16,
-    },
+  searchInput: {
+    flex: 1,
+  },
 
-    searchInput: {
-        flex: 1,
-    },
+  flatlist: {
+    flex: 1,
+  },
 
-    flatlist: {
-        flex: 1,
-    },
+  titlePage: {
+    ...Typography.title,
+    marginVertical: 16,
+  },
 
-    titlePage: {
-        ...Typography.title,
-        marginVertical: 16,
-    },
+  listContent: {
+    gap: 16,
+    paddingBottom: 24,
+  },
 
-    listContent: {
-        gap: 16,
-        paddingBottom: 24,
-    },
-    
-    emptyText: {
-        ...Typography.body,
-        textAlign: "center",
-        marginTop: 24,
-    },
+  emptyText: {
+    ...Typography.body,
+    textAlign: "center",
+    marginTop: 24,
+  },
 });
