@@ -4,6 +4,8 @@ export const FontFamilies = {
   medium: "Poppins_500Medium",
   semiBold: "Poppins_600SemiBold",
   bold: "Poppins_700Bold",
+  italic: "Poppins_400Regular_Italic",
+  mediumItalic: "Poppins_500Medium_Italic",
 } as const;
 
 export const Fonts = {
@@ -35,6 +37,12 @@ export const Typography = {
   body: {
     fontFamily: FontFamilies.regular,
     fontSize: FontSizes.md,
+  },
+
+  quote: {
+    fontFamily: FontFamilies.italic,
+    fontSize: FontSizes.md,
+
   },
 
   caption: {

@@ -2,7 +2,7 @@ import { images } from "@/data/images";
 import type { SheetBook } from "@/types/SheetBook";
 import { Colors } from '@/uiThemes/Colors';
 import { Typography } from "@/uiThemes/Fonts";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from "react-native";
 
 import StarRating from "@/components/StarRating";
 
@@ -28,7 +28,7 @@ export default function BookCard({ book }: BookCardProps) {
                 <Image
                     source={cover}
                     style={styles.cover}
-                    resizeMode= "cover"
+                    resizeMode="cover"
                 />
 
                 <View style={styles.bookDetails}>
@@ -51,7 +51,11 @@ export default function BookCard({ book }: BookCardProps) {
             <Text style={styles.comment} numberOfLines={2}>
                 "{book.comment}"
             </Text>
-            <Text style={styles.genreText}>Voir Plus</Text>
+            <Pressable
+                accessibilityRole="button"
+            >
+                <Text style={styles.genreText}>Voir Plus</Text>
+            </Pressable>
         </View>
     );
 
@@ -138,7 +142,7 @@ const styles = StyleSheet.create({
     },
 
     comment: {
-        ...Typography.title,
+        ...Typography.quote,
         color: Colors.light.textColor,
     },
 
