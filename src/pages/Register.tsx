@@ -274,7 +274,10 @@ const styles = StyleSheet.create({
   container: {
     gap: 32,
     flexGrow: 1,
+    width: "100%",
+    maxWidth: 800,
     justifyContent: "center",
+    alignSelf: "center",
     marginTop:24,
   },
   header: {

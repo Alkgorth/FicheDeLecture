@@ -30,7 +30,6 @@ export default function App() {
   return (
     <AuthProvider>
     <NavigationContainer theme={AppTheme}>
-      
       <Stack.Navigator initialRouteName="LoginPage">
         <Stack.Screen
           name="LoginPage"

@@ -129,7 +129,6 @@ const Login = () => {
               textContentType="password"
               autoCapitalize="none"
               returnKeyType="done"
-              onSubmitEditing={handleLogin}
               style={[Inputs, errors.password && { borderColor: errorColor }]}
             />
             <Pressable
@@ -157,7 +156,7 @@ const Login = () => {
       <View style={styles.buttonGroup}>
         <Pressable
           style={Buttons.primary}
-          onPress={() => navigation.navigate("HomePage")}
+          onPress={handleLogin}
         >
           <Text style={styles.textBtnConnect}>Se Connecter</Text>
         </Pressable>
@@ -178,8 +177,10 @@ const styles = StyleSheet.create({
   container: {
     gap: 32,
     flexGrow: 1,
+    width: "100%",
     maxWidth: 800,
     justifyContent: "center",
+    alignSelf: "center",
   },
   header: {
     alignItems: "center",

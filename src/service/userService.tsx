@@ -1,28 +1,23 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import usersSeed from "../data/users.json";
-
-export type User = {
-  id: number;
-  role: string;
-  email: string;
-  password: string;
-  pseudo: string;
-  avatar?: string;
-};
+import { User } from "@/types/User";
 
 const STORAGE_KEY = "users";
 
+// Le "badge" : l'utilisateur SANS son mot de passe
+export type SessionUser = Omit<User, "password">;
+
+const seedUsers = usersSeed.users as User[];
+
 // Lit les utilisateurs. Au premier lancement, on initialise avec le JSON.
 export const getUsers = async (): Promise<User[]> => {
+  await AsyncStorage.removeItem("users")
   const stored = await AsyncStorage.getItem(STORAGE_KEY);
   if (stored) return JSON.parse(stored) as User[];
 
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(usersSeed));
-  return usersSeed.users as User[];
+  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(seedUsers));
+  return seedUsers;
 };
-
-// Le "badge" : l'utilisateur SANS son mot de passe
-export type SessionUser = Omit<User, "password">;
 
 export const loginUser = async (
   email: string,
