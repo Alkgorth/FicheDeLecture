@@ -30,6 +30,7 @@ export default function App() {
   return (
     <AuthProvider>
     <NavigationContainer theme={AppTheme}>
+      
       <Stack.Navigator initialRouteName="LoginPage">
         <Stack.Screen
           name="LoginPage"
@@ -45,8 +46,7 @@ export default function App() {
           name="RegisterPage"
           component={Register}
           options={{
-            headerTitle:()=> <HeaderTitle  text="Création de compte"/> ,
-            headerTitleAlign: "center", // ou "left"
+            headerShown:false
           }}
         />
       </Stack.Navigator>

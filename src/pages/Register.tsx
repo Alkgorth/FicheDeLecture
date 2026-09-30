@@ -128,7 +128,7 @@ const Register = () => {
             nativeID="pseudo"
             style={{ color: colors.textColorSub, alignItems: "center" }}
           >
-            VOTRE SURNOM* <Ionicons name="help-circle-outline" size={20} />
+            VOTRE SURNOM*
           </Text>
 
           <TextInput
@@ -236,7 +236,7 @@ const Register = () => {
       <View style={styles.buttonGroup}>
         <Pressable
           style={[
-            Buttons,
+            Buttons.primary,
             { backgroundColor: colors.buttonBg },
             loading && { opacity: 0.6 },
           ]}
@@ -254,8 +254,7 @@ const Register = () => {
         </Pressable>
         <Pressable
           style={[
-            Buttons,
-            { borderColor: colors.buttonBg, borderWidth: 2 },
+            Buttons.secondary,
             loading && { opacity: 0.6 },
           ]}
           onPress={() => navigation.navigate('LoginPage')}

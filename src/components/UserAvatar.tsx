@@ -4,10 +4,10 @@ import { Image, ImageSourcePropType, Text, View } from "react-native";
 
 // texte du JSON  →  image réelle
 const avatars: Record<string, ImageSourcePropType> = {
-  "assets/avatarsUsers/alice.png": require("@/assets/avatars/alice.png"),
-  "assets/avatarsUsers/thomas.png": require("@/assets/avatars/thomas.png"),
-  "assets/avatarsUsers/admin1.png": require("@/assets/avatars/admin1.png"),
-  "assets/avatarsUsers/admin2.png": require("@/assets/avatars/admin2.png"),
+  "assets/images/avatarsUsers/user1.png": require("@/assets/images/avatarsUsers/user1.png"),
+  "assets/images/avatarsUsers/user2.png": require("@/assets/images/avatarsUsers/user2.png"),
+  "assets/images/avatarsUsers/user3.png": require("@/assets/images/avatarsUsers/user3.png"),
+  "assets/images/avatarsUsers/user4.png": require("@/assets/images/avatarsUsers/user4.png"),
 };
 
 type Props = {

@@ -156,13 +156,13 @@ const Login = () => {
 
       <View style={styles.buttonGroup}>
         <Pressable
-          style={[Buttons, { backgroundColor: colors.buttonBg }]}
+          style={Buttons.primary}
           onPress={() => navigation.navigate("HomePage")}
         >
           <Text style={styles.textBtnConnect}>Se Connecter</Text>
         </Pressable>
         <Pressable
-          style={[Buttons, { borderColor: colors.buttonBg, borderWidth: 2 }]}
+          style={Buttons.secondary}
           onPress={() => navigation.navigate("RegisterPage")}
         >
           <Text style={styles.textBtnAccount}>Créer un compte</Text>
