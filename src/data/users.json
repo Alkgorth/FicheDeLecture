@@ -6,7 +6,7 @@
       "email": "alice@example.com",
       "password": "Alice123!",
       "pseudo": "Alice",
-      "avatar": "assets/avatars/alice.png"
+      "avatar": "assets/images/avatarsUsers/user1.png"
     },
     {
       "id": 2,
@@ -14,7 +14,7 @@
       "email": "thomas@example.com",
       "password": "Thomas123!",
       "pseudo": "Thomas",
-      "avatar": "assets/avatars/thomas.png"
+      "avatar": "assets/images/avatarsUsers/user2.png"
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
       "email": "admin1@example.com",
       "password": "Admin123!",
       "pseudo": "AdminOne",
-      "avatar": "assets/avatars/admin1.png"
+      "avatar": "assets/images/avatarsUsers/user5.png"
     },
     {
       "id": 4,
@@ -30,7 +30,7 @@
       "email": "admin2@example.com",
       "password": "Admin456!",
       "pseudo": "AdminTwo",
-      "avatar": "assets/avatars/admin2.png"
+      "avatar": "assets/images/avatarsUsers/user6.png"
     }
   ]
 }

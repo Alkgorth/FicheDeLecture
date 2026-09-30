@@ -1,5 +1,5 @@
+import LogoLight from "@/assets/images/LogoLight.svg";
 import { Text, View } from "react-native";
-import LogoLight from "../assets/images/LogoLight.svg";
 
 export default function HeaderTitle({ text}: { text: string}) {
   return (

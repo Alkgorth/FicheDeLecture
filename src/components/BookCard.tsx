@@ -1,36 +1,12 @@
 import type { SheetBook } from "@/types/SheetBook";
 import { Colors } from '@/uiThemes/Colors';
+import { Typography } from "@/uiThemes/Fonts";
 import { Image, StyleSheet, Text, View } from "react-native";
+
+import { images } from "@/data/images";
 
 type BookCardProps = {
     book: SheetBook;
-};
-
-const images = {
-    "assets/images/avatarsUsers/user1.png":
-        require("../assets/images/avatarsUsers/user1.png"),
-    "assets/images/avatarsUsers/user2.png":
-        require("../assets/images/avatarsUsers/user2.png"),
-    "assets/images/avatarsUsers/user3.png":
-        require("../assets/images/avatarsUsers/user3.png"),
-    "assets/images/avatarsUsers/user4.png":
-        require("../assets/images/avatarsUsers/user4.png"),
-    "assets/images/avatarsUsers/user5.png":
-        require("../assets/images/avatarsUsers/user5.png"),
-
-    "assets/images/coversBooks/harry-potter-a-lecole-des-sorciers1.png":
-        require("../assets/images/coversBooks/harry-potter-a-lecole-des-sorciers1.png"),
-    "assets/images/coversBooks/le-seigneur-des-anneaux.png":
-        require("../assets/images/coversBooks/le-seigneur-des-anneaux.png"),
-    "assets/images/coversBooks/1984.png":
-        require("../assets/images/coversBooks/1984.png"),
-    "assets/images/coversBooks/le-petit-prince.png":
-        require("../assets/images/coversBooks/le-petit-prince.png"),
-    "assets/images/coversBooks/Dune.png":
-        require("../assets/images/coversBooks/Dune.png"),
-    "assets/images/coversBooks/Orgueil-et-prejuges.png":
-        require("../assets/images/coversBooks/Orgueil-et-prejuges.png"),
-
 };
 
 export default function BookCard({ book }: BookCardProps) {
@@ -53,7 +29,9 @@ export default function BookCard({ book }: BookCardProps) {
 
                 <View style={styles.bookDetails}>
                     <Text style={styles.bookTitle}>{book.bookTitle}</Text>
-                    <Text style={styles.author}>{book.author}</Text>
+                    <Text style={styles.author}>
+                        {book.author}
+                    </Text>
 
 
                     <View style={styles.genres}>
@@ -67,8 +45,9 @@ export default function BookCard({ book }: BookCardProps) {
             </View>
 
             <Text style={styles.comment} numberOfLines={2}>
-                {book.comment}
+                "{book.comment}"
             </Text>
+            <Text style={styles.genreText}>Voir Plus</Text>
         </View>
     );
 
@@ -96,8 +75,7 @@ const styles = StyleSheet.create({
     },
 
     userName: {
-        fontSize: 14,
-        fontWeight: "600",
+        ...Typography.subtitle
     },
 
     bookContainer: {
@@ -118,17 +96,16 @@ const styles = StyleSheet.create({
     },
 
     bookTitle: {
-        fontSize: 16,
-        fontWeight: "bold",
+        ...Typography.title,
     },
 
     author: {
-        fontSize: 14,
+        ...Typography.caption,
         color: Colors.light.textColorSub,
     },
 
     rating: {
-        fontSize: 18,
+        ...Typography.body,
         color: Colors.light.textStarNotation,
     },
 
@@ -146,12 +123,12 @@ const styles = StyleSheet.create({
     },
 
     genreText: {
-        fontSize: 12,
+        ...Typography.caption,
         color: Colors.light.textColorSecondary,
     },
 
     comment: {
-        fontSize: 13,
+        ...Typography.title,
         lineHeight: 19,
         color: Colors.light.textColor,
     },

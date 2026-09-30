@@ -13,12 +13,13 @@ import { Colors } from '@/uiThemes/Colors';
 import { Typography } from '@/uiThemes/Fonts';
 import { Inputs } from '@/uiThemes/Input';
 
-import BookCard from "@/components/BookCards";
+import BookCard from "@/components/BookCard";
 import cardsHome from "@/data/cardsHome.json";
 import type { SheetBook } from "@/types/SheetBook";
 
+const books: SheetBook[] =  cardsHome;
+
 export default function Home() {
-    const books = cardsHome as SheetBook[];
 
     return (
         <SafeAreaView style={styles.container}>
@@ -27,32 +28,33 @@ export default function Home() {
                     <Image
                         accessibilityLabel="Logo de l'application"
                         style={styles.logoImage}
-                        source={require("../assets/images/logo.jpg")}
+                        source={require("@/assets/images/logo.jpg")}
                     />
                     <Text style={Typography.title}>Libri</Text>
                 </View>
                 <Image
                     accessibilityLabel="Avatar utilisateur"
                     style={styles.avatarImage}
-                    source={require("../assets/images/avatar.jpg")}
+                    source={require("@/assets/images/avatar.jpg")}
                 />
             </View>
             <View style={styles.searchContainer}>
                 <Ionicons
                     name="search-outline"
                     size={20}
-                    color="#6B6B6B"
+                    color={Colors.light.textColorSub}
                     accessibilityElementsHidden={true}
                     importantForAccessibility="no-hide-descendants"
                 />
                 <TextInput
                     style={[Typography.body, styles.searchInput]}
                     accessibilityLabel="Rechercher une œuvre"
+                    placeholderTextColor={Colors.light.textColorSub}
                     placeholder="Rechercher des livres, auteurs, fiches…"
                 />
             </View>
 
-            <View>
+            <View style={styles.flatlist}>
                 <FlatList
                     data={books}
                     keyExtractor={(item) => item.id}
@@ -60,7 +62,7 @@ export default function Home() {
                         <BookCard book={item} />
                     )}
                     ListHeaderComponent={
-                        <Text>Dernières lectures de la communauté</Text>
+                        <Text style={styles.titlePage}>Dernières lectures de la communauté</Text>
                     }
                     contentContainerStyle={styles.listContent}
                     ListEmptyComponent={
@@ -121,6 +123,15 @@ const styles = StyleSheet.create({
 
     searchInput: {
         flex: 1,
+    },
+
+    flatlist: {
+        flex: 1,
+    },
+
+    titlePage: {
+        ...Typography.title,
+        marginVertical: 16,
     },
 
     listContent: {

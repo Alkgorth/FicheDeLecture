@@ -24,7 +24,7 @@ export const FontSizes = {
 export const Typography = {
   title: {
     fontFamily: FontFamilies.bold,
-    fontSize: FontSizes.xxl,
+    fontSize: FontSizes.xl,
   },
 
   subtitle: {
