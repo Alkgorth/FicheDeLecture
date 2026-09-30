@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import usersSeed from "./users.json";
+import usersSeed from "../data/users.json";
 
 export type User = {
   id: number;
@@ -19,6 +19,28 @@ export const getUsers = async (): Promise<User[]> => {
 
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(usersSeed));
   return usersSeed.users as User[];
+};
+
+// Le "badge" : l'utilisateur SANS son mot de passe
+export type SessionUser = Omit<User, "password">;
+
+export const loginUser = async (
+  email: string,
+  password: string,
+): Promise<SessionUser> => {
+  const users = await getUsers();
+
+  const found = users.find(
+    (u) =>
+      u.email.toLowerCase() === email.trim().toLowerCase() &&
+      u.password === password,
+  );
+
+  if (!found) throw new Error("INVALID_CREDENTIALS");
+
+  // On retire le mot de passe : inutile (et risqué) de le garder en mémoire
+  const { password: _password, ...sessionUser } = found;
+  return sessionUser;
 };
 
 // Ne jamais stocker un mot de passe en clair

@@ -3,11 +3,9 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "strict": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@/assets/*": ["./assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

@@ -1,4 +1,5 @@
 import HeaderTitle from "@/components/HeaderTitle";
+import { AuthProvider } from "@/context/AuthContext";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -27,6 +28,7 @@ export type RootStackParamList = {
 
 export default function App() {
   return (
+    <AuthProvider>
     <NavigationContainer theme={AppTheme}>
       <Stack.Navigator initialRouteName="LoginPage">
         <Stack.Screen
@@ -49,25 +51,6 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </AuthProvider>
   );
 }
-
-// export default function RootLayout() {
-
-//   const [loaded, error] = useFonts({
-//     Poppins_400Regular,
-//     Poppins_500Medium,
-//     Poppins_600SemiBold,
-//     Poppins_700Bold
-//   });
-
-//   useEffect(() => {
-//     if (loaded || error) {
-//       SplashScreen.hideAsync();
-//     }
-//   }, [loaded, error]);
-
-//   if (!loaded && !error) {
-//     return null;
-//   }
-// }
