@@ -1,5 +1,4 @@
-import HeaderTitle from "@/components/HeaderTitle";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -7,6 +6,8 @@ import { Colors } from "@/uiThemes/Colors";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,19 +19,28 @@ const AppTheme = {
   },
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
 export type RootStackParamList = {
   HomePage: undefined;
   LoginPage: undefined;
   RegisterPage: undefined;
 };
 
-export default function App() {
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const AppContent = () => {
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading) {
+      SplashScreen.hideAsync();
+    }
+  }, [loading]);
+
+  if (loading) return null;
+
   return (
-    <AuthProvider>
     <NavigationContainer theme={AppTheme}>
-      <Stack.Navigator initialRouteName="LoginPage">
+      <Stack.Navigator initialRouteName={user ? "HomePage" : "LoginPage"}>
         <Stack.Screen
           name="LoginPage"
           component={Login}
@@ -44,13 +54,19 @@ export default function App() {
         <Stack.Screen
           name="RegisterPage"
           component={Register}
-          options={{
-            headerTitle:()=> <HeaderTitle  text="Création de compte"/> ,
-            headerTitleAlign: "center", // ou "left"
-          }}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
-    </AuthProvider>
+  );
+};
+
+export default function App() {
+  return (
+    <KeyboardProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </KeyboardProvider>
   );
 }

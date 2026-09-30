@@ -1,3 +1,4 @@
+import Logo from "@/assets/images/LogoLight.svg";
 import useThemeColors from "@/hooks/useThemeColors";
 import { registerUser } from "@/service/userService";
 import { Buttons } from "@/uiThemes/Buttons";
@@ -10,14 +11,13 @@ import {
   ActivityIndicator,
   Alert,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { RootStackParamList } from "../../App";
-import Logo from "@/assets/images/LogoLight.svg";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -67,7 +67,7 @@ const Register = () => {
     setLoading(true);
     try {
       await registerUser({ email, password, pseudo });
-      Alert .alert(
+      Alert.alert(
         "Inscription réussie",
         "Vous pouvez maintenant vous connecter.",
         [{ text: "OK", onPress: () => navigation.navigate("LoginPage") }],
@@ -116,9 +116,10 @@ const Register = () => {
   );
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
+      bottomOffset={24}
     >
       <Logo width={100} height={120} style={{ alignSelf: "center" }} />
       <View style={styles.form}>
@@ -128,7 +129,7 @@ const Register = () => {
             nativeID="pseudo"
             style={{ color: colors.textColorSub, alignItems: "center" }}
           >
-            VOTRE SURNOM* <Ionicons name="help-circle-outline" size={20} />
+            VOTRE SURNOM*
           </Text>
 
           <TextInput
@@ -236,7 +237,7 @@ const Register = () => {
       <View style={styles.buttonGroup}>
         <Pressable
           style={[
-            Buttons,
+            Buttons.primary,
             { backgroundColor: colors.buttonBg },
             loading && { opacity: 0.6 },
           ]}
@@ -253,19 +254,15 @@ const Register = () => {
           )}
         </Pressable>
         <Pressable
-          style={[
-            Buttons,
-            { borderColor: colors.buttonBg, borderWidth: 2 },
-            loading && { opacity: 0.6 },
-          ]}
-          onPress={() => navigation.navigate('LoginPage')}
+          style={[Buttons.secondary, loading && { opacity: 0.6 }]}
+          onPress={() => navigation.navigate("LoginPage")}
         >
           <Text style={styles.textBtnAccount}>
             Déjà un compte? Se connecter
           </Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -275,8 +272,11 @@ const styles = StyleSheet.create({
   container: {
     gap: 32,
     flexGrow: 1,
+    width: "100%",
+    maxWidth: 800,
     justifyContent: "center",
-    marginTop:24,
+    alignSelf: "center",
+    marginTop: 24,
   },
   header: {
     alignItems: "center",

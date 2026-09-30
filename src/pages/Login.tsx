@@ -6,14 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRef, useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { RootStackParamList } from "../../App";
 import { Inputs } from "../uiThemes/Input";
 
@@ -77,9 +71,10 @@ const Login = () => {
     ) : null;
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
+      bottomOffset={24}
     >
       <View style={styles.header}>
         <Logo width={150} height={170} />
@@ -129,7 +124,6 @@ const Login = () => {
               textContentType="password"
               autoCapitalize="none"
               returnKeyType="done"
-              onSubmitEditing={handleLogin}
               style={[Inputs, errors.password && { borderColor: errorColor }]}
             />
             <Pressable
@@ -155,20 +149,17 @@ const Login = () => {
       </View>
 
       <View style={styles.buttonGroup}>
-        <Pressable
-          style={[Buttons, { backgroundColor: colors.buttonBg }]}
-          onPress={() => navigation.navigate("HomePage")}
-        >
+        <Pressable style={Buttons.primary} onPress={handleLogin}>
           <Text style={styles.textBtnConnect}>Se Connecter</Text>
         </Pressable>
         <Pressable
-          style={[Buttons, { borderColor: colors.buttonBg, borderWidth: 2 }]}
+          style={Buttons.secondary}
           onPress={() => navigation.navigate("RegisterPage")}
         >
           <Text style={styles.textBtnAccount}>Créer un compte</Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -178,8 +169,10 @@ const styles = StyleSheet.create({
   container: {
     gap: 32,
     flexGrow: 1,
+    width: "100%",
     maxWidth: 800,
     justifyContent: "center",
+    alignSelf: "center",
   },
   header: {
     alignItems: "center",
