@@ -8,11 +8,10 @@
     "scheme": "fichedelecture",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": ""
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE"
+        "backgroundColor": "#208AEF"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -24,7 +23,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#FAF6EE",
           "image": "./src/assets/images/LogoSplash.png",
           "imageWidth": 76
         }
