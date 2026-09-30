@@ -1,31 +1,35 @@
+import { images } from "@/data/images";
 import type { SheetBook } from "@/types/SheetBook";
 import { Colors } from '@/uiThemes/Colors';
 import { Typography } from "@/uiThemes/Fonts";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
-import { images } from "@/data/images";
+import StarRating from "@/components/StarRating";
 
 type BookCardProps = {
     book: SheetBook;
 };
 
 export default function BookCard({ book }: BookCardProps) {
-    const avatar = images[book.userAvatar as keyof typeof images];
-    const cover = images[book.bookImage as keyof typeof images];
+    const avatar: ImageSourcePropType = images[book.userAvatar];
+    const cover: ImageSourcePropType = images[book.bookImage];
 
     return (
         <View style={styles.card}>
-            <View style={styles.userContainer}>
-                <Image source={avatar} style={styles.avatar} />
-                <Text style={styles.userName}>{book.userName}</Text>
-                <Text style={styles.rating}>
-                    {"★".repeat(book.rating)}
-                    {"☆".repeat(5 - book.rating)}
-                </Text>
+            <View style={styles.header}>
+                <View style={styles.userInfo}>
+                    <Image source={avatar} style={styles.avatar} />
+                    <Text style={styles.userName}>{book.userName}</Text>
+                </View>
+                <StarRating rating={book.rating} />
             </View>
 
             <View style={styles.bookContainer}>
-                <Image source={cover} style={styles.cover} />
+                <Image
+                    source={cover}
+                    style={styles.cover}
+                    resizeMode= "cover"
+                />
 
                 <View style={styles.bookDetails}>
                     <Text style={styles.bookTitle}>{book.bookTitle}</Text>
@@ -62,7 +66,14 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
 
-    userContainer: {
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 8,
+    },
+
+    userInfo: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
@@ -87,7 +98,6 @@ const styles = StyleSheet.create({
         width: 100,
         height: 140,
         borderRadius: 6,
-        resizeMode: "cover",
     },
 
     bookDetails: {
@@ -129,7 +139,6 @@ const styles = StyleSheet.create({
 
     comment: {
         ...Typography.title,
-        lineHeight: 19,
         color: Colors.light.textColor,
     },
 
