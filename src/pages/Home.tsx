@@ -8,7 +8,6 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { Colors } from '@/uiThemes/Colors';
 import { Typography } from '@/uiThemes/Fonts';
 import { Inputs } from '@/uiThemes/Input';
