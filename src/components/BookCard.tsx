@@ -66,6 +66,7 @@ export default function BookCard({ book }: BookCardProps) {
                 onPress={() => { }}
                 accessibilityRole="link"
                 accessibilityLabel={`Voir plus sur sur l'avis de ${book.userName} sur ${book.bookTitle}`}
+                hitSlop={10}
             >
                 <Text style={styles.genreText}>Voir Plus</Text>
             </Pressable>
