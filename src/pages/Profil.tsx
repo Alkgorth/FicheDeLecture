@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
     },
 
     actions: {
-        alignSelf: "stretch",
+        flexDirection: "row",
+        alignSelf: "center",
         gap: 8,
         marginTop: 8,
     },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     primaryButton: {
         backgroundColor: Colors.light.buttonBg,
         borderRadius: 8,
-        paddingVertical: 12,
+        padding: 12,
         alignItems: "center",
     },
 
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Colors.light.buttonBg,
         borderRadius: 8,
-        paddingVertical: 12,
+        padding: 12,
         alignItems: "center",
     },
 
