@@ -9,6 +9,7 @@ export const Colors={
         textColorSecondary:"#C2410C",
         textColorSub:"#6F6A66",
         textStarNotation:"#EAB308",
+        DANGER_COLOR:"#B00020",
     },
     dark:{
         mainBg:"#FAF6EE",

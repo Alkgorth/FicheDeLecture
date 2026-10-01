@@ -1,19 +1,19 @@
+import { User } from "@/types/User";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import usersSeed from "../data/users.json";
-import { User } from "@/types/User";
 
 const STORAGE_KEY = "users";
 
-// Le "badge" : l'utilisateur SANS son mot de passe
 export type SessionUser = Omit<User, "password">;
 
 const seedUsers = usersSeed.users as User[];
 
-// Lit les utilisateurs. Au premier lancement, on initialise avec le JSON.
 export const getUsers = async (): Promise<User[]> => {
   // await AsyncStorage.removeItem("users")
   const stored = await AsyncStorage.getItem(STORAGE_KEY);
-  if (stored) return JSON.parse(stored) as User[];
+  if (stored) {
+    return JSON.parse(stored) as User[];
+  }
 
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(seedUsers));
   return seedUsers;
@@ -31,9 +31,10 @@ export const loginUser = async (
       u.password === password,
   );
 
-  if (!found) throw new Error("INVALID_CREDENTIALS");
+  if (!found) {
+    throw new Error("INVALID_CREDENTIALS");
+  }
 
-  // On retire le mot de passe : inutile (et risqué) de le garder en mémoire
   const { password: _password, ...sessionUser } = found;
   return sessionUser;
 };
@@ -52,17 +53,39 @@ export const registerUser = async (data: {
   const emailTaken = users.some(
     (u) => u.email.toLowerCase() === data.email.toLowerCase(),
   );
-  if (emailTaken) throw new Error("EMAIL_EXISTS");
+  if (emailTaken) {
+    throw new Error("EMAIL_EXISTS");
+  }
 
   const newUser: User = {
     id: users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1,
-    role:"user",
+    role: "user",
     pseudo: data.pseudo.trim(),
     email: data.email.trim().toLowerCase(),
     password: data.password,
     // await hashPassword(data.password),
   };
 
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([...users, newUser]));
+  await AsyncStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify([...users, newUser])
+  );
   return newUser;
+};
+
+export const deleteUser = async (userId: number): Promise<void> => {
+  const users = await getUsers();
+
+  const userExists = users.some((user) => user.id === userId);
+
+  if (!userExists) {
+    throw new Error("USER_NOT_FOUND");
+  }
+
+  const remainingUsers = users.filter((user) => user.id !== userId);
+
+  await AsyncStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(remainingUsers),
+  );
 };
