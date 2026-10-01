@@ -43,3 +43,4 @@ example
 /android
 
 .npmrc
+server/uploads/

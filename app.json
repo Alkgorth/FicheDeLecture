@@ -28,7 +28,15 @@
           "imageWidth": 76
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Libri a besoin d'accéder à votre caméra pour changer votre photo de profil.",
+          "photosPermission": "Libri a besoin d'accéder à vos photos pour changer votre photo de profil.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "reactCompiler": true

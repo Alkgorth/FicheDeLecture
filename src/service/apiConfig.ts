@@ -8,4 +8,5 @@ const resolveHost = (): string => {
   return hostUri ? hostUri.split(":")[0] : "localhost";
 };
 
-export const API_BASE_URL = `http://${resolveHost()}:${API_PORT}/api`;
+export const API_ORIGIN = `http://${resolveHost()}:${API_PORT}`;
+export const API_BASE_URL = `${API_ORIGIN}/api`;

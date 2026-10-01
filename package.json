@@ -19,6 +19,7 @@
     "expo-font": "~57.0.4",
     "expo-glass-effect": "~57.0.4",
     "expo-image": "~57.0.5",
+    "expo-image-picker": "~57.0.20",
     "expo-linking": "~57.0.11",
     "expo-splash-screen": "~57.0.9",
     "expo-status-bar": "~57.0.1",
@@ -26,6 +27,7 @@
     "expo-system-ui": "~57.0.4",
     "expo-web-browser": "~57.0.3",
     "express": "^5.2.1",
+    "multer": "^2.4.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
@@ -41,6 +43,8 @@
   "devDependencies": {
     "@types/react": "~19.2.2",
     "concurrently": "^9.2.4",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~57.0.2",
     "react-native-svg-transformer": "^1.5.3",
     "typescript": "~6.0.3"
   },
