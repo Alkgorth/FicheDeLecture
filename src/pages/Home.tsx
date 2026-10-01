@@ -1,29 +1,20 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
+import BookCard from "@/components/BookCard";
+import SearchingBooks from "@/components/SearchingBooks";
+import UserAvatar from "@/components/UserAvatar";
+import { useAuth } from "@/context/AuthContext";
+import { BookData, searchBooks } from "@/data/bookData";
+import { default as cardsHome, default as fiches } from "@/data/cardsHome.json";
+import type { SheetBook } from "@/types/SheetBook";
 import { Buttons } from "@/uiThemes/Buttons";
 import { Colors } from "@/uiThemes/Colors";
 import { Typography } from "@/uiThemes/Fonts";
-import { Inputs } from "@/uiThemes/Input";
-
-import BookCard from "@/components/BookCard";
-import UserAvatar from "@/components/UserAvatar";
-import { useAuth } from "@/context/AuthContext";
-
-import cardsHome from "@/data/cardsHome.json";
-
-import type { SheetBook } from "@/types/SheetBook";
-
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useMemo, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../App";
 
 const books: SheetBook[] = cardsHome;
@@ -33,6 +24,13 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function Home() {
   const { user, logout } = useAuth();
   const navigation = useNavigation<NavigationProp>();
+  const [query, setQuery] = useState("");
+  const isSearching = query.trim().length > 0;
+
+  const results = useMemo(
+    () => (isSearching ? searchBooks(fiches as BookData[], query) : []),
+    [query, isSearching],
+  );
 
   const handleLogout = async () => {
     await logout();
@@ -87,37 +85,38 @@ export default function Home() {
         </View>
       </View>
       {/* SEARCHBAR */}
-      <View style={styles.searchContainer}>
-        <Ionicons
-          name="search-outline"
-          size={20}
-          color={Colors.light.textColorSub}
-          accessibilityElementsHidden={true}
-          importantForAccessibility="no-hide-descendants"
-        />
-        <TextInput
-          style={[Typography.body, styles.searchInput]}
-          accessibilityLabel="Rechercher une œuvre"
-          placeholderTextColor={Colors.light.textColorSub}
-          placeholder="Rechercher des livres, auteurs, fiches…"
-        />
-      </View>
+      <SearchingBooks value={query} onChangeText={setQuery} />
+      {/* AFFICHAGE FICHE DE LECTURE */}
       <View style={styles.flatlist}>
-        <FlatList
-          data={books}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <BookCard book={item} />}
-          ListHeaderComponent={
-            <Text style={styles.titlePage}>
-              Dernières lectures de la communauté
-            </Text>
-          }
-          contentContainerStyle={styles.listContent}
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>Aucune lecture à afficher.</Text>
-          }
-          showsVerticalScrollIndicator={false}
-        />
+        {isSearching ? (
+          <FlatList
+            data={results}
+            keyExtractor={(item) => item.id}
+            keyboardShouldPersistTaps="handled"
+            renderItem={({ item }) => <BookCard book={item} />}
+            ListEmptyComponent={
+              <Text style={{ padding: 16, textAlign: "center" }}>
+                Aucun résultat pour « {query} »
+              </Text>
+            }
+          />
+        ) : (
+          <FlatList
+            data={books}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <BookCard book={item} />}
+            ListHeaderComponent={
+              <Text style={styles.titlePage}>
+                Dernières lectures de la communauté
+              </Text>
+            }
+            contentContainerStyle={styles.listContent}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>Aucune lecture à afficher.</Text>
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -153,20 +152,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-  },
-
-  searchContainer: {
-    ...Inputs,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: Colors.light.textBg,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-
-  searchInput: {
-    flex: 1,
   },
 
   flatlist: {
