@@ -47,7 +47,7 @@ const Login = () => {
     try {
       await login(email, password);
       // reset : on efface l'historique pour que "retour" ne ramène pas au login
-      navigation.reset({ index: 0, routes: [{ name: "HomePage" }] });
+      navigation.reset({ index: 0, routes: [{ name: "MainTabs" }] });
     } catch (err) {
       if (err instanceof Error && err.message === "INVALID_CREDENTIALS") {
         setErrors({ general: "Email ou mot de passe incorrect." });

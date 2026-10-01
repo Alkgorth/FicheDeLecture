@@ -1,6 +1,6 @@
-import Home from '@/pages/Home';
-import Profile from '@/pages/Profile';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from "@/pages/Home";
+import Profile from "@/pages/Profil";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 
