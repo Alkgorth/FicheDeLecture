@@ -1,3 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   FlatList,
   Pressable,
@@ -6,21 +9,21 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+import { Buttons } from "@/uiThemes/Buttons";
 import { Colors } from "@/uiThemes/Colors";
 import { Typography } from "@/uiThemes/Fonts";
 import { Inputs } from "@/uiThemes/Input";
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import BookCard from "@/components/BookCard";
 import UserAvatar from "@/components/UserAvatar";
 import { useAuth } from "@/context/AuthContext";
+
 import cardsHome from "@/data/cardsHome.json";
+
 import type { SheetBook } from "@/types/SheetBook";
-import { Buttons } from "@/uiThemes/Buttons";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 import { RootStackParamList } from "../../App";
 
 const books: SheetBook[] = cardsHome;
