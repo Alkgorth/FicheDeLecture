@@ -2,24 +2,34 @@ import { images } from "@/data/images";
 import type { SheetBook } from "@/types/SheetBook";
 import { Colors } from '@/uiThemes/Colors';
 import { Typography } from "@/uiThemes/Fonts";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import StarRating from "@/components/StarRating";
+import { Inputs } from "@/uiThemes/Input";
 
 type BookCardProps = {
     book: SheetBook;
 };
 
 export default function BookCard({ book }: BookCardProps) {
-    const avatar: ImageSourcePropType = images[book.userAvatar];
-    const cover: ImageSourcePropType = images[book.bookImage];
+    const avatar = images[book.userAvatar];
+    const cover = images[book.bookImage];
 
     return (
         <View style={styles.card}>
             <View style={styles.header}>
                 <View style={styles.userInfo}>
-                    <Image source={avatar} style={styles.avatar} />
-                    <Text style={styles.userName}>{book.userName}</Text>
+                    <Image
+                        source={avatar}
+                        style={styles.avatar}
+                        accessible={false}
+                    />
+                    <Text
+                        style={styles.userName}
+                        numberOfLines={1}
+                    >
+                        {book.userName}
+                    </Text>
                 </View>
                 <StarRating rating={book.rating} />
             </View>
@@ -28,7 +38,9 @@ export default function BookCard({ book }: BookCardProps) {
                 <Image
                     source={cover}
                     style={styles.cover}
-                    resizeMode= "cover"
+                    resizeMode="cover"
+                    accessibilityLabel={`Couverture de ${book.bookTitle}`}
+                    accessible={true}
                 />
 
                 <View style={styles.bookDetails}>
@@ -47,11 +59,16 @@ export default function BookCard({ book }: BookCardProps) {
                     </View>
                 </View>
             </View>
-
             <Text style={styles.comment} numberOfLines={2}>
                 "{book.comment}"
             </Text>
-            <Text style={styles.genreText}>Voir Plus</Text>
+            <Pressable
+                onPress={() => { }}
+                accessibilityRole="link"
+                accessibilityLabel={`Voir plus sur sur l'avis de ${book.userName} sur ${book.bookTitle}`}
+            >
+                <Text style={styles.genreText}>Voir Plus</Text>
+            </Pressable>
         </View>
     );
 
@@ -59,11 +76,11 @@ export default function BookCard({ book }: BookCardProps) {
 
 const styles = StyleSheet.create({
     card: {
+        ...Inputs,
         backgroundColor: Colors.light.white,
         borderRadius: 12,
         padding: 16,
         gap: 12,
-        elevation: 2,
     },
 
     header: {
@@ -75,6 +92,7 @@ const styles = StyleSheet.create({
 
     userInfo: {
         flexDirection: "row",
+        flexShrink: 1,
         alignItems: "center",
         gap: 8,
     },
@@ -114,11 +132,6 @@ const styles = StyleSheet.create({
         color: Colors.light.textColorSub,
     },
 
-    rating: {
-        ...Typography.body,
-        color: Colors.light.textStarNotation,
-    },
-
     genres: {
         flexDirection: "row",
         flexWrap: "wrap",
@@ -138,8 +151,11 @@ const styles = StyleSheet.create({
     },
 
     comment: {
-        ...Typography.title,
+        ...Typography.quote,
         color: Colors.light.textColor,
+        borderLeftWidth: 3,
+        borderLeftColor: Colors.light.buttonBg,
+        paddingLeft: 16,
+        borderRadius: 4,
     },
-
 });

@@ -1,3 +1,8 @@
+import {
+  Poppins_400Regular, Poppins_400Regular_Italic, Poppins_500Medium, Poppins_500Medium_Italic, Poppins_600SemiBold,
+  Poppins_700Bold, useFonts
+} from "@expo-google-fonts/poppins";
+
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -62,6 +67,19 @@ const AppContent = () => {
 };
 
 export default function App() {
+  const [fontsLoaded, fontError] = useFonts({
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+    Poppins_400Regular_Italic,
+    Poppins_500Medium_Italic,
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+  
   return (
     <KeyboardProvider>
       <AuthProvider>
@@ -70,3 +88,4 @@ export default function App() {
     </KeyboardProvider>
   );
 }
+ 
