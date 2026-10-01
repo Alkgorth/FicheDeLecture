@@ -1,10 +1,4 @@
-    //récupérer l'avatar de l'utilisateur
-    //récupérer le nom de l'utilisateur
-    //récupérer le rôle de l'utilisateur
-    //récupérer les livres lus par l'utilisateur
-    //récupérer les fiches créées par l'utilisateur
-    //ajouter un bouton pour modifier les données personnelles, en ouvrant une modal
-
+import { useState } from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -15,6 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import ConfirmModal from "@/components/ConfirmModal";
 import UserAvatar from "@/components/UserAvatar";
 import { useAuth } from "@/context/AuthContext";
 import type { SheetBook } from "@/types/SheetBook";
@@ -26,7 +21,37 @@ import { Typography } from "@/uiThemes/Fonts";
 const userSheets: SheetBook[] = [];
 
 export default function Profile() {
-    const { user, loading } = useAuth();
+    const { user, loading, deleteAccount } = useAuth();
+
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
+
+    const openDeleteModal = () => {
+        setDeleteError(null);
+        setIsDeleteModalVisible(true);
+    }
+
+    const closeDeleteModal = () => {
+        if (isDeleting) {
+            return;
+        }
+        setIsDeleteModalVisible(false);
+    }
+
+    const confirmDeleteAccount = async () => {
+        setIsDeleting(true);
+        setDeleteError(null);
+
+        try {
+            await deleteAccount();
+            setIsDeleteModalVisible(false);
+        } catch {
+            setDeleteError("La suppression a échoué. Veuillez réessayer.");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -41,7 +66,7 @@ export default function Profile() {
     }
 
     if (!user) {
-        return (null);
+        return null;
     }
 
     const header = (
@@ -67,9 +92,8 @@ export default function Profile() {
                 <Pressable
                     style={styles.secondaryButton}
                     accessibilityRole="button"
-                    onPress={() => {
-                        // TODO : demander une confirmation, puis supprimer le compte
-                    }}
+                    accessibilityHint="Demande de confirmation avant la suppression du compte"
+                    onPress={openDeleteModal}
                 >
                     <Text style={styles.secondaryButtonText}>
                         Supprimer mon compte
@@ -103,6 +127,17 @@ export default function Profile() {
                 }
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
+            />
+
+            <ConfirmModal
+                visible={isDeleteModalVisible}
+                title="Supprimer mon compte ?"
+                message="Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+                confirmLabel="Oui, supprimer"
+                loading={isDeleting}
+                errorMessage={deleteError}
+                onConfirm={confirmDeleteAccount}
+                onCancel={closeDeleteModal}
             />
         </SafeAreaView>
     );
@@ -138,6 +173,7 @@ const styles = StyleSheet.create({
     },
 
     actions: {
+        flex: 1,
         flexDirection: "row",
         alignSelf: "center",
         gap: 8,
@@ -145,29 +181,35 @@ const styles = StyleSheet.create({
     },
 
     primaryButton: {
+        flex: 1,
         backgroundColor: Colors.light.buttonBg,
         borderRadius: 8,
         padding: 12,
         alignItems: "center",
+        justifyContent: "center",
     },
 
     primaryButtonText: {
         ...Typography.button,
         color: Colors.light.white,
+        textAlign: "center",
     },
 
     // TODO : une couleur dédiée aux actions destructrices (rouge)
     secondaryButton: {
+        flex: 1,
         borderWidth: 1,
         borderColor: Colors.light.buttonBg,
         borderRadius: 8,
         padding: 12,
         alignItems: "center",
+        justifyContent: "center",
     },
 
     secondaryButtonText: {
         ...Typography.button,
         color: Colors.light.buttonBg,
+        textAlign: "center",
     },
 
     sectionTitle: {
