@@ -16,6 +16,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../App";
+import { useUserData } from "@/context/UserDataContext";
 
 const books: SheetBook[] = cardsHome;
 
@@ -26,7 +27,8 @@ export default function Home() {
   const navigation = useNavigation<NavigationProp>();
   const [query, setQuery] = useState("");
   const isSearching = query.trim().length > 0;
-
+  const { getAvatarUri } = useUserData();
+  
   const results = useMemo(
     () => (isSearching ? searchBooks(fiches as BookData[], query) : []),
     [query, isSearching],
@@ -48,7 +50,7 @@ export default function Home() {
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-          <UserAvatar user={user} size={48} />
+          <UserAvatar user={user} size={48} photoUri={getAvatarUri(user?.pseudo)}/>
           <Text>Bonjour {user?.pseudo}</Text>
         </View>
         <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>

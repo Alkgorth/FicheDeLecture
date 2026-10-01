@@ -1,6 +1,6 @@
 import useThemeColors from "@/hooks/useThemeColors";
 import { SessionUser } from "@/service/userService";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import { Image, ImageSourcePropType,  Text, View } from "react-native";
 
 // texte du JSON  →  image réelle
 const avatars: Record<string, ImageSourcePropType> = {
@@ -13,12 +13,17 @@ const avatars: Record<string, ImageSourcePropType> = {
 type Props = {
   user: SessionUser | null;
   size?: number;
+  photoUri?: string | null; 
 };
 
-const UserAvatar = ({ user, size = 48 }: Props) => {
+const UserAvatar = ({ user, size = 48, photoUri }: Props) => {
   const colors = useThemeColors();
   const label = `Avatar de ${user?.pseudo ?? "l'utilisateur"}`;
-  const source = user?.avatar ? avatars[user.avatar] : undefined;
+  const source : ImageSourcePropType | undefined = photoUri
+    ? { uri: photoUri }
+    : user?.avatar
+      ? avatars[user.avatar]
+      : undefined;
 
   // Cas 1 : l'utilisateur a un avatar connu
   if (source) {

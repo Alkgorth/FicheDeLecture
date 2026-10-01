@@ -7,13 +7,16 @@
     "icon": "./src/assets/images/LogoSplash.png",
     "scheme": "fichedelecture",
     "userInterfaceStyle": "automatic",
-    "ios": {
-    },
+    "ios": {},
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#208AEF"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.anonymous.Libri"
     },
     "web": {
       "output": "single",
@@ -25,10 +28,17 @@
         {
           "backgroundColor": "#FAF6EE",
           "image": "./src/assets/images/LogoSplash.png",
-          "imageWidth": 76
+          "imageWidth": 200
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Libri a besoin d'accéder à tes photos pour choisir ta photo de profil.",
+          "cameraPermission": "Libri a besoin d'accéder à ta caméra pour prendre ta photo de profil."
+        }
+      ]
     ],
     "experiments": {
       "reactCompiler": true
