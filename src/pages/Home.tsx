@@ -41,6 +41,7 @@ export default function Home() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* HEADER */}
       <View
         style={{
           flexDirection: "row",
@@ -52,7 +53,7 @@ export default function Home() {
           <UserAvatar user={user} size={48} />
           <Text>Bonjour {user?.pseudo}</Text>
         </View>
-        <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', }}>
+        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
           {/* Affichage conditionnel selon le rôle */}
           {user?.role === "admin" && (
             <Pressable
@@ -85,7 +86,7 @@ export default function Home() {
           </Pressable>
         </View>
       </View>
-
+      {/* SEARCHBAR */}
       <View style={styles.searchContainer}>
         <Ionicons
           name="search-outline"
@@ -160,8 +161,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     backgroundColor: Colors.light.textBg,
-    padding: 12,
     marginTop: 16,
+    marginBottom: 8,
   },
 
   searchInput: {

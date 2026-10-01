@@ -1,18 +1,26 @@
 import {
-  Poppins_400Regular, Poppins_400Regular_Italic, Poppins_500Medium, Poppins_500Medium_Italic, Poppins_600SemiBold,
-  Poppins_700Bold, useFonts
+  Poppins_400Regular,
+  Poppins_400Regular_Italic,
+  Poppins_500Medium,
+  Poppins_500Medium_Italic,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  useFonts,
 } from "@expo-google-fonts/poppins";
 
+import TabNavigation from "@/components/TabNavigation";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { Colors } from "@/uiThemes/Colors";
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { Tabs } from "react-native-screens";
+import MainTabs, { TabParamList } from "@/components/MainTabs";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +33,9 @@ const AppTheme = {
 };
 
 export type RootStackParamList = {
-  HomePage: undefined;
   LoginPage: undefined;
   RegisterPage: undefined;
+  MainTabs: NavigatorScreenParams<TabParamList> |undefined  ; 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,20 +53,20 @@ const AppContent = () => {
 
   return (
     <NavigationContainer theme={AppTheme}>
-      <Stack.Navigator initialRouteName={user ? "HomePage" : "LoginPage"}>
+      <Stack.Navigator initialRouteName={user ? "MainTabs" : "LoginPage"}>
         <Stack.Screen
           name="LoginPage"
           component={Login}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="HomePage"
-          component={Home}
+          name="RegisterPage"
+          component={Register}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="RegisterPage"
-          component={Register}
+          name="MainTabs"
+          component={MainTabs}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
@@ -79,7 +87,7 @@ export default function App() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-  
+
   return (
     <KeyboardProvider>
       <AuthProvider>
@@ -88,4 +96,3 @@ export default function App() {
     </KeyboardProvider>
   );
 }
- 
