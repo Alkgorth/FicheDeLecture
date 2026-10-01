@@ -54,3 +54,13 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Serveur local de données utilisateurs
+
+Les comptes utilisateurs (`src/data/users.json`) sont gérés par un petit serveur Express local (`server/index.js`), car une app Expo ne peut pas écrire directement dans son propre code source. `npm start` lance ce serveur en même temps que Metro grâce à `concurrently`.
+
+- Le serveur écoute sur `http://0.0.0.0:4000` et lit/écrit directement `src/data/users.json`.
+- Le client (`src/service/apiConfig.ts`) retrouve automatiquement l'adresse IP de la machine de dev via `Constants.expoConfig.hostUri`, donc ça fonctionne aussi depuis un téléphone physique sur le même réseau Wi-Fi, sans configuration manuelle.
+- Pour lancer uniquement le serveur : `npm run server`. Pour lancer uniquement Expo : `npm run start:app`.
+- Vérifier que le serveur répond : `http://<IP-de-la-machine>:4000/api/health`.
+
