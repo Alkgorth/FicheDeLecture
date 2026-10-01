@@ -11,7 +11,7 @@ const seedUsers = usersSeed.users as User[];
 
 // Lit les utilisateurs. Au premier lancement, on initialise avec le JSON.
 export const getUsers = async (): Promise<User[]> => {
-  await AsyncStorage.removeItem("users")
+  // await AsyncStorage.removeItem("users")
   const stored = await AsyncStorage.getItem(STORAGE_KEY);
   if (stored) return JSON.parse(stored) as User[];
 
