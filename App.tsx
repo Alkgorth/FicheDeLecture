@@ -8,19 +8,21 @@ import {
   useFonts,
 } from "@expo-google-fonts/poppins";
 
-import TabNavigation from "@/components/TabNavigation";
+import MainTabs, { TabParamList } from "@/components/MainTabs";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import Home from "@/pages/Home";
+import { UserDataProvider } from "@/context/UserDataContext";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { Colors } from "@/uiThemes/Colors";
-import { DefaultTheme, NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
+import {
+  DefaultTheme,
+  NavigationContainer,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { Tabs } from "react-native-screens";
-import MainTabs, { TabParamList } from "@/components/MainTabs";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,7 +37,7 @@ const AppTheme = {
 export type RootStackParamList = {
   LoginPage: undefined;
   RegisterPage: undefined;
-  MainTabs: NavigatorScreenParams<TabParamList> |undefined  ; 
+  MainTabs: NavigatorScreenParams<TabParamList> | undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -90,9 +92,11 @@ export default function App() {
 
   return (
     <KeyboardProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <UserDataProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </UserDataProvider>
     </KeyboardProvider>
   );
 }
