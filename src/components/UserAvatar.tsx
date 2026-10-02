@@ -7,9 +7,10 @@ import { Image, Text, View } from "react-native";
 type Props = {
   user: SessionUser | null;
   size?: number;
+  photoUri?: string | null; 
 };
 
-const UserAvatar = ({ user, size = 48 }: Props) => {
+const UserAvatar = ({ user, size = 48, photoUri }: Props) => {
   const colors = useThemeColors();
   const label = `Avatar de ${user?.pseudo ?? "l'utilisateur"}`;
   const avatar = user?.avatar;
