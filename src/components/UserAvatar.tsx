@@ -1,14 +1,8 @@
+import { images } from "@/data/images";
 import useThemeColors from "@/hooks/useThemeColors";
+import { API_ORIGIN } from "@/service/apiConfig";
 import { SessionUser } from "@/service/userService";
-import { Image, ImageSourcePropType,  Text, View } from "react-native";
-
-// texte du JSON  →  image réelle
-const avatars: Record<string, ImageSourcePropType> = {
-  "assets/images/avatarsUsers/user1.png": require("@/assets/images/avatarsUsers/user1.png"),
-  "assets/images/avatarsUsers/user2.png": require("@/assets/images/avatarsUsers/user2.png"),
-  "assets/images/avatarsUsers/user3.png": require("@/assets/images/avatarsUsers/user3.png"),
-  "assets/images/avatarsUsers/user4.png": require("@/assets/images/avatarsUsers/user4.png"),
-};
+import { Image, Text, View } from "react-native";
 
 type Props = {
   user: SessionUser | null;
@@ -19,13 +13,22 @@ type Props = {
 const UserAvatar = ({ user, size = 48, photoUri }: Props) => {
   const colors = useThemeColors();
   const label = `Avatar de ${user?.pseudo ?? "l'utilisateur"}`;
-  const source : ImageSourcePropType | undefined = photoUri
-    ? { uri: photoUri }
-    : user?.avatar
-      ? avatars[user.avatar]
-      : undefined;
+  const avatar = user?.avatar;
 
-  // Cas 1 : l'utilisateur a un avatar connu
+  // Cas 1 : photo personnelle hébergée par le serveur local
+  if (avatar?.startsWith("/avatars/")) {
+    return (
+      <Image
+        source={{ uri: `${API_ORIGIN}${avatar}` }}
+        accessibilityRole="image"
+        accessibilityLabel={label}
+        style={{ width: size, height: size, borderRadius: size / 2 }}
+      />
+    );
+  }
+
+  // Cas 2 : avatar prédéfini connu (comptes de démonstration)
+  const source = avatar ? images[avatar] : undefined;
   if (source) {
     return (
       <Image
@@ -37,7 +40,7 @@ const UserAvatar = ({ user, size = 48, photoUri }: Props) => {
     );
   }
 
-  // Cas 2 : pas d'avatar (ex. un nouvel inscrit) → un rond avec l'initiale
+  // Cas 3 : pas d'avatar (ex. un nouvel inscrit) → un rond avec l'initiale
   return (
     <View
       accessible

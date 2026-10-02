@@ -35,8 +35,9 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Libri a besoin d'accéder à tes photos pour choisir ta photo de profil.",
-          "cameraPermission": "Libri a besoin d'accéder à ta caméra pour prendre ta photo de profil."
+          "cameraPermission": "Libri a besoin d'accéder à votre caméra pour changer votre photo de profil.",
+          "photosPermission": "Libri a besoin d'accéder à vos photos pour changer votre photo de profil.",
+          "microphonePermission": false
         }
       ]
     ],

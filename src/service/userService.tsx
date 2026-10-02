@@ -1,42 +1,23 @@
 import { User } from "@/types/User";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import usersSeed from "../data/users.json";
-
-const STORAGE_KEY = "users";
+import { API_BASE_URL } from "./apiConfig";
 
 export type SessionUser = Omit<User, "password">;
-
-const seedUsers = usersSeed.users as User[];
-
-export const getUsers = async (): Promise<User[]> => {
-  // await AsyncStorage.removeItem("users")
-  const stored = await AsyncStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    return JSON.parse(stored) as User[];
-  }
-
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(seedUsers));
-  return seedUsers;
-};
 
 export const loginUser = async (
   email: string,
   password: string,
 ): Promise<SessionUser> => {
-  const users = await getUsers();
+  const response = await fetch(`${API_BASE_URL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email.trim(), password }),
+  });
 
-  const found = users.find(
-    (u) =>
-      u.email.toLowerCase() === email.trim().toLowerCase() &&
-      u.password === password,
-  );
-
-  if (!found) {
+  if (!response.ok) {
     throw new Error("INVALID_CREDENTIALS");
   }
 
-  const { password: _password, ...sessionUser } = found;
-  return sessionUser;
+  return response.json();
 };
 
 // Ne jamais stocker un mot de passe en clair
@@ -48,44 +29,84 @@ export const registerUser = async (data: {
   email: string;
   password: string;
 }): Promise<User> => {
-  const users = await getUsers();
+  const response = await fetch(`${API_BASE_URL}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-  const emailTaken = users.some(
-    (u) => u.email.toLowerCase() === data.email.toLowerCase(),
-  );
-  if (emailTaken) {
+  if (response.status === 409) {
     throw new Error("EMAIL_EXISTS");
   }
+  if (!response.ok) {
+    throw new Error("REGISTER_FAILED");
+  }
 
-  const newUser: User = {
-    id: users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1,
-    role: "user",
-    pseudo: data.pseudo.trim(),
-    email: data.email.trim().toLowerCase(),
-    password: data.password,
-    // await hashPassword(data.password),
-  };
-
-  await AsyncStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify([...users, newUser])
-  );
-  return newUser;
+  return response.json();
 };
 
 export const deleteUser = async (userId: number): Promise<void> => {
-  const users = await getUsers();
+  const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+    method: "DELETE",
+  });
 
-  const userExists = users.some((user) => user.id === userId);
-
-  if (!userExists) {
+  if (response.status === 404) {
     throw new Error("USER_NOT_FOUND");
   }
+  if (!response.ok) {
+    throw new Error("DELETE_FAILED");
+  }
+};
 
-  const remainingUsers = users.filter((user) => user.id !== userId);
+export const updateUser = async (
+  userId: number,
+  data: { pseudo?: string; email?: string; password?: string },
+): Promise<SessionUser> => {
+  const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-  await AsyncStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(remainingUsers),
-  );
+  if (response.status === 404) {
+    throw new Error("USER_NOT_FOUND");
+  }
+  if (response.status === 409) {
+    throw new Error("EMAIL_EXISTS");
+  }
+  if (!response.ok) {
+    throw new Error("UPDATE_FAILED");
+  }
+
+  return response.json();
+};
+
+export const uploadAvatar = async (
+  userId: number,
+  fileUri: string,
+): Promise<SessionUser> => {
+  const fileName = fileUri.split("/").pop() ?? "avatar.jpg";
+  const extension = fileName.split(".").pop()?.toLowerCase();
+  const mimeType = extension === "png" ? "image/png" : extension === "webp" ? "image/webp" : "image/jpeg";
+
+  const formData = new FormData();
+  formData.append("avatar", {
+    uri: fileUri,
+    name: fileName,
+    type: mimeType,
+  } as unknown as Blob);
+
+  const response = await fetch(`${API_BASE_URL}/users/${userId}/avatar`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (response.status === 404) {
+    throw new Error("USER_NOT_FOUND");
+  }
+  if (!response.ok) {
+    throw new Error("AVATAR_UPLOAD_FAILED");
+  }
+
+  return response.json();
 };

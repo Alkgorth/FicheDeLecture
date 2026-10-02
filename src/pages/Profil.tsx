@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import ConfirmModal from "@/components/ConfirmModal";
+import EditProfileModal from "@/components/EditProfileModal";
 import UserAvatar from "@/components/UserAvatar";
 import { useAuth } from "@/context/AuthContext";
 import { useUserData } from "@/context/UserDataContext";
@@ -36,6 +37,7 @@ export default function Profile() {
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [deleteError, setDeleteError] = useState<string | null>(null);
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
     const openDeleteModal = () => {
         setDeleteError(null);
@@ -90,9 +92,7 @@ export default function Profile() {
                 <Pressable
                     style={styles.primaryButton}
                     accessibilityRole="button"
-                    onPress={() => {
-                        // TODO : ouvrir la modale de mise à jour des données
-                    }}
+                    onPress={() => setIsEditModalVisible(true)}
                 >
                     <Text style={styles.primaryButtonText}>
                         Mettre à jour mes données
@@ -149,6 +149,11 @@ export default function Profile() {
                 errorMessage={deleteError}
                 onConfirm={confirmDeleteAccount}
                 onCancel={closeDeleteModal}
+            />
+
+            <EditProfileModal
+                visible={isEditModalVisible}
+                onClose={() => setIsEditModalVisible(false)}
             />
         </SafeAreaView>
     );

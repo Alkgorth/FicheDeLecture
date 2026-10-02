@@ -1,4 +1,10 @@
-import { deleteUser, loginUser, SessionUser } from "@/service/userService";
+import {
+  deleteUser,
+  loginUser,
+  SessionUser,
+  updateUser,
+  uploadAvatar,
+} from "@/service/userService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
@@ -16,6 +22,10 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: () => Promise<void>;
+  updateProfile: (
+    data: { pseudo?: string; email?: string; password?: string },
+    newAvatarUri?: string,
+  ) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,8 +70,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await logout();
   }
 
+  const updateProfile = async (
+    data: { pseudo?: string; email?: string; password?: string },
+    newAvatarUri?: string,
+  ) => {
+    if (!user) {
+      throw new Error("Aucun utilisateur connecté");
+    }
+
+    let updatedUser = await updateUser(user.id, data);
+    if (newAvatarUri) {
+      updatedUser = await uploadAvatar(updatedUser.id, newAvatarUri);
+    }
+
+    await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, deleteAccount }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, logout, deleteAccount, updateProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );
