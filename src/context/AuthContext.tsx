@@ -1,5 +1,5 @@
+import { deleteUser, loginUser, SessionUser } from "@/service/userService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loginUser, SessionUser } from "@/service/userService";
 import {
   createContext,
   ReactNode,
@@ -15,6 +15,7 @@ type AuthContextType = {
   loading: boolean; // true pendant qu'on relit la session au démarrage
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,7 +29,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const restoreSession = async () => {
       try {
         const stored = await AsyncStorage.getItem(SESSION_KEY);
-        if (stored) setUser(JSON.parse(stored));
+
+        if (stored)
+          setUser(JSON.parse(stored));
+      } catch (error) {
+        console.error("Erreur lors de la restauration de la session :", error);
       } finally {
         setLoading(false);
       }
@@ -47,8 +52,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  const deleteAccount = async () => {
+    if (!user) {
+      throw new Error("Aucun utilisateur connecté");
+    }
+    await deleteUser(user.id);
+    await logout();
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );
